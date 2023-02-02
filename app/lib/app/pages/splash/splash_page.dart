@@ -1,3 +1,4 @@
+import 'package:dw9_delivery_app/app/core/ui/styles/app_styles.dart';
 import 'package:dw9_delivery_app/app/core/ui/styles/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -13,7 +14,18 @@ class SplashPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Splash'),
       ),
-      body: Container(),
+      body: Column(
+        children: [
+          Container(),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('Teste'),
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: 'texto'),
+          )
+        ],
+      ),
     );
   }
 }
