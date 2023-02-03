@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../../core/config/env/env.dart';
+
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
@@ -20,7 +22,7 @@ class SplashPage extends StatelessWidget {
           DeliveryButton(
             width: 200,
             height: 200,
-            label: "Teste Label",
+            label: Env.instance['backend_base_url'] ?? '',
             onPressed: () {},
           ),
           TextFormField(
