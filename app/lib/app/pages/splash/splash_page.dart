@@ -14,38 +14,40 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash'),
-      ),
-      body: Column(
-        children: [
-          Container(),
-          DeliveryButton(
-            width: 200,
-            height: 200,
-            label: Env.instance['backend_base_url'] ?? '',
-            onPressed: () {},
-          ),
-          Text(MediaQuery.of(context).size.width.toString()),
-          Text(context.screenWidth.toString()),
-          Row(
-            children: [
-              Container(
-                color: Colors.red,
-                width: context.percentWidth(.6),
-                height: 200,
+      body: ColoredBox(
+        color: const Color(0XFF14080E),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: context.screenWidth,
+                child: Image.asset(
+                  'assets/images/lanche.png',
+                  fit: BoxFit.cover,
+                ),
               ),
-              Container(
-                color: Colors.blue,
-                width: MediaQuery.of(context).size.width * .4,
-                height: 200,
+            ),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: context.percentHeight(.30),
+                  ),
+                  Image.asset('assets/images/logo.png'),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  DeliveryButton(
+                    width: context.percentWidth(.6),
+                    label: 'ACESSAR',
+                    onPressed: () {},
+                  )
+                ],
               ),
-            ],
-          ),
-          TextFormField(
-            decoration: InputDecoration(labelText: 'texto'),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
