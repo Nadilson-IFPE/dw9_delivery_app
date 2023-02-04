@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dw9_delivery_app/app/core/extensions/formatter_extension.dart';
+import 'package:dw9_delivery_app/app/dto/order_product_dto.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dw9_delivery_app/app/core/ui/base_state/base_state.dart';
@@ -93,7 +94,14 @@ class _ProductDetailPageState
                 child: BlocBuilder<ProductDetailController, int>(
                   builder: (context, amount) {
                     return ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop(
+                          OrderProductDto(
+                            productModel: widget.productModel,
+                            amount: amount,
+                          ),
+                        );
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
