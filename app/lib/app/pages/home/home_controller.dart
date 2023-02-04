@@ -17,16 +17,31 @@ class HomeController extends Cubit<HomeState> {
       emit(state.copyWith(status: HomeStateStatus.loaded, products: products));
     } catch (e, s) {
       log('Erro ao buscar produtos!', error: e, stackTrace: s);
-      emit(state.copyWith(
-          status: HomeStateStatus.error,
-          errorMessage: 'Erro ao buscar produtos!'));
+      emit(
+        state.copyWith(
+            status: HomeStateStatus.error,
+            errorMessage: 'Erro ao buscar produtos!'),
+      );
     }
   }
 
   void addOrUpdateBag(OrderProductDto orderProduct) {
     // [...] = duplica array
     final shoppingBag = [...state.shoppingBag];
-    shoppingBag.add(orderProduct);
+
+    final orderIndex = shoppingBag
+        .indexWhere((orderP) => orderP.product == orderProduct.product);
+
+    if (orderIndex > -1) {
+      if (orderProduct.amount == 0) {
+        shoppingBag.removeAt(orderIndex);
+      } else {
+        shoppingBag[orderIndex] = orderProduct;
+      }
+    } else {
+      shoppingBag.add(orderProduct);
+    }
+
     emit(state.copyWith(shoppingBag: shoppingBag));
   }
 }

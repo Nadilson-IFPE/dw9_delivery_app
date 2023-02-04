@@ -13,11 +13,13 @@ import 'package:dw9_delivery_app/app/pages/product_detail/product_detail_control
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final ProductModel productModel;
+  final ProductModel product;
+  final OrderProductDto? order;
 
   const ProductDetailPage({
     super.key,
-    required this.productModel,
+    required this.product,
+    this.order,
   });
 
   @override
@@ -26,6 +28,51 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState
     extends BaseState<ProductDetailPage, ProductDetailController> {
+  @override
+  void initState() {
+    super.initState();
+    final amount = widget.order?.amount ?? 1;
+    controller.initial(amount, widget.order != null);
+  }
+
+  void _showConfirmDelete(int amount) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Deseja excluir o produto?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancelar',
+                style: context.textStyles.textBold.copyWith(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.of(context).pop(
+                  OrderProductDto(
+                    product: widget.product,
+                    amount: amount,
+                  ),
+                );
+              },
+              child: Text(
+                'Confirmar',
+                style: context.textStyles.textBold,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +85,7 @@ class _ProductDetailPageState
             height: context.percentHeight(.4),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(widget.productModel.image),
+                image: NetworkImage(widget.product.image),
                 fit: BoxFit.cover,
               ),
             ),
@@ -49,7 +96,7 @@ class _ProductDetailPageState
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              widget.productModel.name,
+              widget.product.name,
               style: context.textStyles.textExtraBold.copyWith(fontSize: 22),
             ),
           ),
@@ -61,7 +108,7 @@ class _ProductDetailPageState
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: SingleChildScrollView(
                 child: Text(
-                  widget.productModel.description,
+                  widget.product.description,
                 ),
               ),
             ),
@@ -72,17 +119,17 @@ class _ProductDetailPageState
               Container(
                 width: context.percentWidth(.5),
                 height: 68,
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: BlocBuilder<ProductDetailController, int>(
                   builder: (context, amount) {
                     return DeliveryIncrementDecrementButton(
-                      amount: amount,
                       decrementTap: () {
                         controller.decrement();
                       },
                       incrementTap: () {
                         controller.increment();
                       },
+                      amount: amount,
                     );
                   },
                 ),
@@ -90,38 +137,53 @@ class _ProductDetailPageState
               Container(
                 width: context.percentWidth(.5),
                 height: 68,
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: BlocBuilder<ProductDetailController, int>(
                   builder: (context, amount) {
                     return ElevatedButton(
+                      style: amount == 0
+                          ? ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red)
+                          : null,
                       onPressed: () {
-                        Navigator.of(context).pop(
-                          OrderProductDto(
-                            productModel: widget.productModel,
-                            amount: amount,
-                          ),
-                        );
+                        if (amount == 0) {
+                          _showConfirmDelete(amount);
+                        } else {
+                          Navigator.of(context).pop(
+                            OrderProductDto(
+                              product: widget.product,
+                              amount: amount,
+                            ),
+                          );
+                        }
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Adicionar',
-                            style: context.textStyles.textExtraBold
-                                .copyWith(fontSize: 13),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          AutoSizeText(
-                            (widget.productModel.price * amount).currencyPTBR,
-                            maxFontSize: 13,
-                            minFontSize: 5,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            style: context.textStyles.textExtraBold,
-                          ),
-                        ],
+                      child: Visibility(
+                        visible: amount > 0,
+                        replacement: Text(
+                          'Exluir produto da sacola',
+                          style: context.textStyles.textExtraBold,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Adicionar',
+                              style: context.textStyles.textExtraBold
+                                  .copyWith(fontSize: 13),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            AutoSizeText(
+                              (widget.product.price * amount).currencyPTBR,
+                              maxFontSize: 13,
+                              minFontSize: 5,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style: context.textStyles.textExtraBold,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

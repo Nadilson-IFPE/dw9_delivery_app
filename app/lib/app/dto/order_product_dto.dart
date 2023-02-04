@@ -1,13 +1,13 @@
 import 'package:dw9_delivery_app/app/models/product_model.dart';
 
 class OrderProductDto {
-  final ProductModel productModel;
+  final ProductModel product;
   final int amount;
 
   OrderProductDto({
-    required this.productModel,
+    required this.product,
     required this.amount,
   });
 
-  double get totalPrice => amount * productModel.price;
+  double get totalPrice => amount * product.price;
 }
