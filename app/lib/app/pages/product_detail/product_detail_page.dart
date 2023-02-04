@@ -76,10 +76,11 @@ class ProductDetailPage extends StatelessWidget {
                         width: 10,
                       ),
                       AutoSizeText(
-                        r'R$ 6000,99',
+                        r'R$ 60,99',
                         maxFontSize: 13,
                         minFontSize: 5,
                         maxLines: 1,
+                        textAlign: TextAlign.center,
                         style: context.textStyles.textExtraBold,
                       ),
                     ],
