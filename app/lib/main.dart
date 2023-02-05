@@ -6,5 +6,5 @@ import 'app/core/config/env/env.dart';
 Future<void> main() async {
   await Env.instance.load();
 
-  runApp(const Dw9DeliveryApp());
+  runApp(Dw9DeliveryApp());
 }
