@@ -14,6 +14,6 @@ class RegisterRouter {
             ),
           ),
         ],
-        child: RegisterPage(),
+        child: const RegisterPage(),
       );
 }
