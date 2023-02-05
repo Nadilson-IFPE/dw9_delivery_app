@@ -86,7 +86,21 @@ class _LoginPageState extends BaseState<LoginPage, LoginController> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
-                        decoration: const InputDecoration(labelText: 'Senha'),
+                        decoration: InputDecoration(
+                          label: Text('Senha'),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              _showPassword();
+                            },
+                            child: Icon(
+                              tffPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        obscureText: !tffPassword,
                         controller: passwordEC,
                         validator: Validatorless.multiple(
                           [

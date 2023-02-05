@@ -122,7 +122,7 @@ class _ProductDetailPageState
                 padding: const EdgeInsets.all(8),
                 child: BlocBuilder<ProductDetailController, int>(
                   builder: (context, amount) {
-                    return DeliveryIncrementDecrementButton(
+                    return DeliveryIncrementDecrementButton.compact(
                       decrementTap: () {
                         controller.decrement();
                       },
